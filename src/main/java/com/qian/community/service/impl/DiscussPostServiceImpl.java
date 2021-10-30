@@ -2,9 +2,10 @@ package com.qian.community.service.impl;
 
 import com.qian.community.dao.DiscussPostMapper;
 import com.qian.community.entity.DiscussPost;
+import com.qian.community.entity.Page;
 import com.qian.community.service.DiscussPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     private DiscussPostMapper discussPostMapper;
 
     @Override
-    public List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit) {
+    public List<DiscussPost> selectDiscussPosts(int userId, Page page) {
 
-        return discussPostMapper.selectDiscussPosts(userId,offset,limit);
+        return discussPostMapper.selectDiscussPosts(userId,page.getOffset(),page.getLimit());
     }
 
     @Override

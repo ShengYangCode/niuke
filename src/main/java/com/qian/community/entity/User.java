@@ -1,7 +1,12 @@
 package com.qian.community.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.util.Date;
 
+@Accessors(chain = true)
+@Data
 public class User {
 
     private int id;
