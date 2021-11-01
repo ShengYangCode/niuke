@@ -5,8 +5,7 @@ import com.qian.community.entity.Page;
 import com.qian.community.entity.User;
 import com.qian.community.service.DiscussPostService;
 import com.qian.community.service.UserService;
-import com.sun.deploy.net.HttpRequest;
-import com.sun.net.httpserver.HttpsServer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
