@@ -159,4 +159,26 @@ public class UserServiceImpl implements UserService, CommunityConstant {
     public void logout(String ticket) {
         loginTicketMapper.updateStatus(ticket, 1);
     }
+
+    /**
+     * 更改头像的业务方方法
+     * @param userId
+     * @param headerUrl
+     * @return
+     */
+    @Override
+    public int updateHeader(int userId, String headerUrl) {
+
+        return userMapper.updateHeader(userId, headerUrl);
+    }
+
+    /**
+     * 查询凭证的业务方法
+     * @param ticket
+     * @return
+     */
+    public LoginTicket findLoginTicket(String ticket) {
+
+        return loginTicketMapper.selectByTicket(ticket);
+    }
 }

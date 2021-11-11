@@ -1,0 +1,86 @@
+package com.qian.community.controller;
+
+import ch.qos.logback.core.util.ContextUtil;
+import com.qian.community.service.UserService;
+import com.qian.community.util.communityUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.Multipart;
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * @description:
+ * @author: qian
+ * @createDate: 2021/11/11
+ */
+@Controller
+@RequestMapping("/user")
+public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Value("${community.path.upload}")
+    private String uploadPath;
+
+    @Value("${community.path.domin}")
+    private String domin;
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
+    @Autowired
+    private UserService userService;
+
+
+    @RequestMapping(path = "/setting", method = RequestMethod.GET)
+    public String getSettingPage() {
+
+        return "/site/setting";
+    }
+
+    @RequestMapping(path = "/upload", method = RequestMethod.POST)
+    public String uploadHeader(MultipartFile headerImage, Model model) {
+
+        // 没穿图片
+        if (headerImage == null) {
+            model.addAttribute("error", "你还没选择图片");
+            return "/site/setting";
+        }
+
+        // 修改原始图片的名称避免文件重复导致覆盖
+        String fileName = headerImage.getOriginalFilename();
+        // 原始文件后缀
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        if (StringUtils.isBlank(suffix)) {
+            model.addAttribute("error", "文件格式错误");
+            return "/site/setting";
+        }
+
+        // 生成随机文件名
+        fileName = communityUtil.getUUId() + suffix;
+
+        // 确定文件存放的路径
+        File dest = new File(uploadPath + "/" + fileName);
+        try {
+            headerImage.transferTo(dest);
+        } catch (IOException e) {
+            logger.error("长传文件失败" + e.getMessage());
+            throw new RuntimeException("上传文件失败服务器发生异常" + e.getMessage());
+        }
+
+        // 更新当前用户的头像访问路径
+        // http://localhost:8080/community/user/header/xxx.png
+    //    User user =
+        return null;
+    }
+}

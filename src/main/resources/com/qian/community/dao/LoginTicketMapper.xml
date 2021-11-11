@@ -9,11 +9,10 @@
         insert into login_ticket (user_id, ticket, status, expired) values(#{userId},#{ticket},#{status},#{expired})
     </insert>
     <update id="updateStatus">
-        select * from login_ticket where ticket=#{ticket}
-
+        update  login_ticket set status=#{status} where ticket=#{ticket}
     </update>
 
     <select id="selectByTicket" resultType="com.qian.community.entity.LoginTicket">
-        update  login_ticket set status=#{status} where ticket=#{ticket}
+        select * from login_ticket where ticket=#{ticket}
     </select>
 </mapper>

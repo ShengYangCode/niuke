@@ -1,5 +1,6 @@
 package com.qian.community.service;
 
+import com.qian.community.entity.LoginTicket;
 import com.qian.community.entity.User;
 
 import java.util.Map;
@@ -15,4 +16,9 @@ public interface UserService {
     Map<String,Object> login(String username, String password, int expiredSeconds);
 
     void logout(String ticket);
+
+    int updateHeader(int userId, String headerUrl);
+
+
+    LoginTicket findLoginTicket(String ticket);
 }
