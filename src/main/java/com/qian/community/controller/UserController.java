@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.security.util.Password;
 
 import javax.mail.Multipart;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,5 +111,12 @@ public class UserController {
             e.printStackTrace();
         }
 
+    }
+
+    @RequestMapping(path = "/password", method = RequestMethod.POST)
+    public String uploadHeader(String oldPassword, String newPassword) {
+
+        userService.updatePassword(HostHolder.getUser().getId(), oldPassword, newPassword);
+        return "redirect:/logout";
     }
 }

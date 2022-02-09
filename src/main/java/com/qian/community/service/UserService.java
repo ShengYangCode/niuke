@@ -21,4 +21,6 @@ public interface UserService {
 
 
     LoginTicket findLoginTicket(String ticket);
+
+    void updatePassword(int id, String password, String newPassword);
 }

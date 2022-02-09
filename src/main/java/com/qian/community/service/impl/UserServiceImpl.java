@@ -181,4 +181,20 @@ public class UserServiceImpl implements UserService, CommunityConstant {
 
         return loginTicketMapper.selectByTicket(ticket);
     }
+
+    @Override
+    public void updatePassword(int id, String password, String newPassword) {
+
+        User user = userMapper.selectById(id);
+
+        String s = communityUtil.md5(password + user.getSalt());
+        if (!user.getPassword().equals(s)) {
+
+            throw new RuntimeException("密码错误");
+        } else {
+            newPassword = communityUtil.md5(newPassword + user.getSalt());
+            userMapper.updatePassword(id,newPassword);
+        }
+
+    }
 }
