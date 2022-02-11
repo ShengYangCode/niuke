@@ -1,6 +1,7 @@
 package com.qian.community.controller;
 
 
+import com.qian.community.annotation.LoginRequired;
 import com.qian.community.entity.User;
 import com.qian.community.service.UserService;
 import com.qian.community.util.HostHolder;
@@ -47,13 +48,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage() {
 
         return "/site/setting";
     }
 
+    @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model) {
 
