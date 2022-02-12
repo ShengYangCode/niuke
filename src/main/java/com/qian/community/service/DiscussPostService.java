@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface DiscussPostService {
 
-    List<DiscussPost> selectDiscussPosts(int userId, Page page);
     int selectDiscussPostRows(int userId);
 
     int addDiscussPost(DiscussPost discussPost);
+
+    DiscussPost findDiscussPostById(Integer id);
+
+    List<DiscussPost> findDiscussPosts(int userId, int offset, int limit);
 }

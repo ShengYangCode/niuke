@@ -25,10 +25,10 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     @Autowired
     private DiscussPostMapper discussPostMapper;
 
-    @Override
-    public List<DiscussPost> selectDiscussPosts(int userId, Page page) {
 
-        return discussPostMapper.selectDiscussPosts(userId,page.getOffset(),page.getLimit());
+    @Override
+    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit) {
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit);
     }
 
     @Override
@@ -47,6 +47,12 @@ public class DiscussPostServiceImpl implements DiscussPostService {
 
         return discussPostMapper.insertDiscussPost(discussPost);
     }
+
+    @Override
+    public DiscussPost findDiscussPostById(Integer id) {
+        return discussPostMapper.selectDiscussPostById(id);
+    }
+
 
     @Override
     public int selectDiscussPostRows(int userId) {

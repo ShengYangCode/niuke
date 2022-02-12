@@ -71,4 +71,14 @@ public class CommunityApplicationTests implements ApplicationContextAware {
         mailClient.sendMail("3167292824@qq.com","欢迎",process);
     }
 
+    @Test
+    public void testApplicationContext10() {
+        List<DiscussPost> discussPosts = discussPostMapper.selectDiscussPosts(0, 0, 10);
+        for (DiscussPost discussPost : discussPosts) {
+            User user = userMapper.selectById(discussPost.getUserId());
+            System.out.println(user);
+        }
+        System.out.println(discussPosts);
+    }
+
 }
