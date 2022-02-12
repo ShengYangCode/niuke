@@ -4,9 +4,11 @@ import com.qian.community.dao.DiscussPostMapper;
 import com.qian.community.entity.DiscussPost;
 import com.qian.community.entity.Page;
 import com.qian.community.service.DiscussPostService;
+import com.qian.community.util.sensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -19,12 +21,31 @@ import java.util.List;
 public class DiscussPostServiceImpl implements DiscussPostService {
 
     @Autowired
+    private sensitiveFilter sensitiveFilter;
+    @Autowired
     private DiscussPostMapper discussPostMapper;
 
     @Override
     public List<DiscussPost> selectDiscussPosts(int userId, Page page) {
 
         return discussPostMapper.selectDiscussPosts(userId,page.getOffset(),page.getLimit());
+    }
+
+    @Override
+    public int addDiscussPost(DiscussPost discussPost) {
+        if (discussPost == null) {
+            throw new IllegalArgumentException("参数不能为空");
+        }
+
+        //对HTML标签进行转义
+        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
+        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
+
+        // 敏感词替换
+        discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));
+        discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
+
+        return discussPostMapper.insertDiscussPost(discussPost);
     }
 
     @Override

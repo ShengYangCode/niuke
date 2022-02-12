@@ -1,7 +1,10 @@
 package com.qian.community.entity;
 
+import lombok.experimental.Accessors;
+
 import java.util.Date;
 
+@Accessors(chain = true)
 public class DiscussPost {
 
     private int id;

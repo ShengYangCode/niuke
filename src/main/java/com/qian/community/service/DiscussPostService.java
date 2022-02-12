@@ -11,4 +11,6 @@ public interface DiscussPostService {
 
     List<DiscussPost> selectDiscussPosts(int userId, Page page);
     int selectDiscussPostRows(int userId);
+
+    int addDiscussPost(DiscussPost discussPost);
 }

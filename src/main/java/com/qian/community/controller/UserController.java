@@ -46,6 +46,9 @@ public class UserController {
     private String contextPath;
 
     @Autowired
+    private HostHolder hostHolder;
+
+    @Autowired
     private UserService userService;
 
     @LoginRequired
@@ -88,7 +91,7 @@ public class UserController {
 
         // 更新当前用户的头像访问路径
         // http://localhost:8080/community/user/header/xxx.png
-        User user = HostHolder.getUser();
+        User user = hostHolder.getUser();
         String headerUrl = domain + contextPath + "/user/header/" + fileName;
         userService.updateHeader(user.getId(), headerUrl);
         return "redirect:/index";
@@ -118,7 +121,7 @@ public class UserController {
     @RequestMapping(path = "/password", method = RequestMethod.POST)
     public String uploadHeader(String oldPassword, String newPassword) {
 
-        userService.updatePassword(HostHolder.getUser().getId(), oldPassword, newPassword);
+        userService.updatePassword(hostHolder.getUser().getId(), oldPassword, newPassword);
         return "redirect:/logout";
     }
 }
