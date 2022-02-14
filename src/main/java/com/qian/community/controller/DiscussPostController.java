@@ -84,7 +84,7 @@ public class DiscussPostController implements CommunityConstant {
                 User user1 = userService.findUserById(comment1.getUserId());
                 commentVo.put("user", user1);
                 commentVo.put("comment", comment1);
-                commentVoList.add(commentVo);
+
                 // 查询二级评论
                 List<Comment> comment2 = commentService.findCommentByEntity(ENTITY_TYPE_COMMENT, comment1.getId(), 0, Integer.MAX_VALUE);
                 // 封装二级评论的数据， 一个一级评论 对应多个二级评论
