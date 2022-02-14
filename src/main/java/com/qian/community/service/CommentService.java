@@ -16,4 +16,7 @@ public interface CommentService {
 
 
     int findCountByEntity(int entityType, int entityId);
+
+
+    void addComment(Comment comment);
 }

@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qian.community.dao.CommentMapper">
 
+
     <select id="selectCommentByEntity" parameterType="int" resultType="com.qian.community.entity.Comment">
         select * from comment where entity_id = #{entityId} and entity_type = #{entityType} and status = 0
         order by create_time
@@ -13,4 +14,10 @@
     <select id="selectCountByEntity" resultType="java.lang.Integer">
         select count(*) from comment where entity_id = #{entityId} and entity_type = #{entityType} and status = 0
     </select>
+
+
+    <insert id="insertComment" parameterType="comment">
+        insert into comment values (null, #{userId}, #{entityType}, #{entityId}, #{targetId},#{content},#{status}
+        ,now())
+    </insert>
 </mapper>

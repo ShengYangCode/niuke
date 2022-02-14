@@ -19,4 +19,7 @@ public interface CommentMapper {
 
     /*根据实体类型查询同一个帖子评论的数量*/
     int selectCountByEntity(int entityType, int entityId);
+
+    /*添加评论*/
+    int insertComment(Comment comment);
 }
