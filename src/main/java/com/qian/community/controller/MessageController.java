@@ -7,12 +7,15 @@ import com.qian.community.service.CommentService;
 import com.qian.community.service.MessageService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.HostHolder;
+import com.qian.community.util.communityUtil;
+import javafx.scene.shape.PathElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,10 +89,31 @@ public class MessageController {
                 letters.add(map);
             }
         }
+
+        // 把未读信息设置为已读
+        List<Integer> letterIds = getLetterIds(messages);
+        if (letterIds.size() > 0) {
+            messageService.readMessage(letterIds);
+        }
+
+
         model.addAttribute("letters", letters);
         model.addAttribute("target", getLetterTarget(conversationId));
         return "/site/letter-detail";
 
+    }
+    // 获取未读信息的id集合
+    private List<Integer> getLetterIds(List<Message> messages) {
+        List<Integer> list = new ArrayList<>();
+        if (messages != null) {
+            for (Message message : messages) {
+                // 只有接收者才会出现未读信息
+                if (hostHolder.getUser().getId() == message.getToId() && message.getStatus() == 0) {
+                    list.add(message.getId());
+                }
+            }
+        }
+        return list;
     }
 
     private User getLetterTarget(String conversationId) {
@@ -101,6 +125,32 @@ public class MessageController {
         } else {
             return userService.findUserById(id1);
         }
+    }
+
+    @RequestMapping(path = "/letter/send", method = RequestMethod.POST)
+    @ResponseBody
+    public String sendLetter(String toName, String content) {
+
+        User user = userService.findUserByName(toName);
+        if (user == null) {
+            return communityUtil.getJSONString(1, "目标不存在");
+        }
+
+        // 封装po
+        Message message = new Message();
+        message.setFromId(hostHolder.getUser().getId());
+        message.setToId(user.getId());
+        // 拼接ld
+        if (message.getFromId() > message.getToId()) {
+            message.setConversationId(message.getToId() + "_" + message.getFromId());
+        } else {
+            message.setConversationId(message.getFromId() + "_" + message.getToId());
+        }
+        message.setContent(content);
+
+        messageService.addMessage(message);
+
+        return communityUtil.getJSONString(0);
     }
 
 }

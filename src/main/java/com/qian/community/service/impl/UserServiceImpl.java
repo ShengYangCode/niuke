@@ -197,4 +197,9 @@ public class UserServiceImpl implements UserService, CommunityConstant {
         }
 
     }
+
+    @Override
+    public User findUserByName(String name) {
+        return userMapper.selectByName(name);
+    }
 }

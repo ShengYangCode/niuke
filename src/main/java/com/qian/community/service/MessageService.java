@@ -27,4 +27,9 @@ public interface MessageService {
 
     /*查询未读私信的数量*/
     int selectPrivateMessageCount(int userId, String conversationId);
+
+    int addMessage(Message message);
+
+    // 读取消息
+    int readMessage(List<Integer> ids);
 }

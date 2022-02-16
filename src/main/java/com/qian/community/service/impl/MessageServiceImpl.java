@@ -4,8 +4,10 @@ import com.qian.community.dao.DiscussPostMapper;
 import com.qian.community.dao.MessageMapper;
 import com.qian.community.entity.Message;
 import com.qian.community.service.MessageService;
+import com.qian.community.util.sensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageMapper messageMapper;
+    @Autowired
+    private com.qian.community.util.sensitiveFilter sensitiveFilter;
 
     @Override
     public List<Message> selectConversations(int userId, int offset, int limit) {
@@ -44,5 +48,17 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public int selectPrivateMessageCount(int userId, String conversationId) {
         return messageMapper.selectPrivateMessageCount(userId, conversationId);
+    }
+
+    @Override
+    public int addMessage(Message message) {
+        message.setContent(HtmlUtils.htmlEscape(message.getContent()));
+        message.setContent(sensitiveFilter.filter(message.getContent()));
+        return messageMapper.insertMessage(message);
+    }
+
+    @Override
+    public int readMessage(List<Integer> ids) {
+        return messageMapper.updateStatus(ids, 1);
     }
 }
