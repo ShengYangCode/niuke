@@ -3,8 +3,10 @@ package com.qian.community.controller;
 
 import com.qian.community.annotation.LoginRequired;
 import com.qian.community.entity.User;
+import com.qian.community.service.FollowService;
 import com.qian.community.service.LikeService;
 import com.qian.community.service.UserService;
+import com.qian.community.util.CommunityConstant;
 import com.qian.community.util.HostHolder;
 import com.qian.community.util.communityUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +35,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements CommunityConstant {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -54,6 +56,9 @@ public class UserController {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private FollowService followService;
 
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
@@ -143,6 +148,19 @@ public class UserController {
          int likeCount = likeService.findUserLikeCount(userId);
          model.addAttribute("likeCount", likeCount);
 
+         // 关注数量
+         Long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+         model.addAttribute("followeeCount", followeeCount);
+         // 粉丝数量
+         Long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+         model.addAttribute("followerCount", followerCount);
+         // 是否已关注
+         boolean hasFollowed = false;
+         if (hostHolder.getUser() != null) {
+             hasFollowed = followService.hasFollower(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
+
+         }
+         model.addAttribute("hasFollowed", hasFollowed);
          return "/site/profile";
      }
 
