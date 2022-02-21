@@ -3,7 +3,7 @@ package com.qian.community.controller;
 
 import com.qian.community.annotation.LoginRequired;
 import com.qian.community.entity.User;
-import com.qian.community.service.FollowService;
+import com.qian.community.service.impl.FollowService;
 import com.qian.community.service.LikeService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.CommunityConstant;
@@ -18,11 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.security.util.Password;
 
-import javax.mail.Multipart;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
