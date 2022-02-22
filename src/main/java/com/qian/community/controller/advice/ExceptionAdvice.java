@@ -1,6 +1,6 @@
 package com.qian.community.controller.advice;
 
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ExceptionAdvice {
         if ("XMLHttpRequest".equals(header)) {
             response.setContentType("application/plain;charset=utf-8");
             PrintWriter writer = response.getWriter();
-            writer.write(communityUtil.getJSONString(1,"服务器异常"));
+            writer.write(CommunityUtil.getJSONString(1,"服务器异常"));
         } else {
             response.sendRedirect(request.getContextPath() + "/error");
         }

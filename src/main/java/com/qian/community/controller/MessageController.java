@@ -3,12 +3,10 @@ package com.qian.community.controller;
 import com.qian.community.entity.Message;
 import com.qian.community.entity.Page;
 import com.qian.community.entity.User;
-import com.qian.community.service.CommentService;
 import com.qian.community.service.MessageService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.HostHolder;
-import com.qian.community.util.communityUtil;
-import javafx.scene.shape.PathElement;
+import com.qian.community.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,7 +131,7 @@ public class MessageController {
 
         User user = userService.findUserByName(toName);
         if (user == null) {
-            return communityUtil.getJSONString(1, "目标不存在");
+            return CommunityUtil.getJSONString(1, "目标不存在");
         }
 
         // 封装po
@@ -150,7 +148,7 @@ public class MessageController {
 
         messageService.addMessage(message);
 
-        return communityUtil.getJSONString(0);
+        return CommunityUtil.getJSONString(0);
     }
 
 }

@@ -8,7 +8,7 @@ import com.qian.community.service.LikeService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.CommunityConstant;
 import com.qian.community.util.HostHolder;
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +84,7 @@ public class UserController implements CommunityConstant {
         }
 
         // 生成随机文件名
-        fileName = communityUtil.getUUId() + suffix;
+        fileName = CommunityUtil.getUUId() + suffix;
 
         // 确定文件存放的路径
         File dest = new File(uploadPath + "/" + fileName);

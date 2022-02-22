@@ -8,7 +8,7 @@ import com.qian.community.entity.User;
 import com.qian.community.service.UserService;
 import com.qian.community.util.CommunityConstant;
 import com.qian.community.util.MailClient;
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,11 +80,11 @@ public class UserServiceImpl implements UserService, CommunityConstant {
             return map;
         }
         // 注册用户
-        user.setSalt(communityUtil.getUUId().substring(0,5));
-        user.setPassword(communityUtil.md5(user.getPassword() + user.getSalt()));
+        user.setSalt(CommunityUtil.getUUId().substring(0,5));
+        user.setPassword(CommunityUtil.md5(user.getPassword() + user.getSalt()));
         user.setType(0);
         user.setStatus(0);
-        user.setActivationCode(communityUtil.getUUId());
+        user.setActivationCode(CommunityUtil.getUUId());
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png",new Random().nextInt(1000)));
         user.setCreateTime(new Date());
         userMapper.insertUser(user);
@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService, CommunityConstant {
         }
 
         // 验证密码
-        String s = communityUtil.md5(password + user.getSalt());
+        String s = CommunityUtil.md5(password + user.getSalt());
         if (!user.getPassword().equals(s)) {
             map.put("passwordMsg", "密码错误");
             return map;
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService, CommunityConstant {
 
         // 生成登录凭证
         LoginTicket loginTicket = new LoginTicket();
-        loginTicket.setUserId(user.getId()).setTicket(communityUtil.getUUId())
+        loginTicket.setUserId(user.getId()).setTicket(CommunityUtil.getUUId())
                 .setStatus(0).setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
         loginTicketMapper.insertLoginTicket(loginTicket);
 
@@ -187,12 +187,12 @@ public class UserServiceImpl implements UserService, CommunityConstant {
 
         User user = userMapper.selectById(id);
 
-        String s = communityUtil.md5(password + user.getSalt());
+        String s = CommunityUtil.md5(password + user.getSalt());
         if (!user.getPassword().equals(s)) {
 
             throw new RuntimeException("密码错误");
         } else {
-            newPassword = communityUtil.md5(newPassword + user.getSalt());
+            newPassword = CommunityUtil.md5(newPassword + user.getSalt());
             userMapper.updatePassword(id,newPassword);
         }
 

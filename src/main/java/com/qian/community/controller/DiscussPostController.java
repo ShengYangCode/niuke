@@ -10,13 +10,12 @@ import com.qian.community.service.LikeService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.CommunityConstant;
 import com.qian.community.util.HostHolder;
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.ParagraphView;
 import java.util.*;
 
 /**
@@ -49,7 +48,7 @@ public class DiscussPostController implements CommunityConstant {
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
         if (user == null) {
-            return communityUtil.getJSONString(403,"你还没有登录");
+            return CommunityUtil.getJSONString(403,"你还没有登录");
         }
 
         DiscussPost post = new DiscussPost();
@@ -58,7 +57,7 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
         discussPostService.addDiscussPost(post);
-        return communityUtil.getJSONString(0,"发布成功！") ;
+        return CommunityUtil.getJSONString(0,"发布成功！") ;
 
     }
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)

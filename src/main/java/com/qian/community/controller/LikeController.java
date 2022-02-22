@@ -3,7 +3,7 @@ package com.qian.community.controller;
 import com.qian.community.entity.User;
 import com.qian.community.service.LikeService;
 import com.qian.community.util.HostHolder;
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +44,6 @@ public class LikeController {
         Map<String, Object> res = new HashMap<>();
         res.put("likeCount", likeCount);
         res.put("likeStatus", likeStatus);
-        return communityUtil.getJSONString(0, null, res);
+        return CommunityUtil.getJSONString(0, null, res);
     }
 }

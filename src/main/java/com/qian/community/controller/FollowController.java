@@ -6,7 +6,7 @@ import com.qian.community.service.UserService;
 import com.qian.community.service.impl.FollowService;
 import com.qian.community.util.CommunityConstant;
 import com.qian.community.util.HostHolder;
-import com.qian.community.util.communityUtil;
+import com.qian.community.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +42,7 @@ public class FollowController implements CommunityConstant {
 
         followService.follow(user.getId(), entityType, entityId);
 
-        return communityUtil.getJSONString(0, "关注成功");
+        return CommunityUtil.getJSONString(0, "关注成功");
     }
 
     @RequestMapping(path = "/unfollow", method = RequestMethod.POST)
@@ -52,9 +52,9 @@ public class FollowController implements CommunityConstant {
 
         followService.Unfollow(user.getId(), entityType, entityId);
 
-        return communityUtil.getJSONString(0, "取消关注成功");
+        return CommunityUtil.getJSONString(0, "取消关注成功");
     }
-
+    // 关注人列表
     @RequestMapping(path = "/followees/{userId}", method = RequestMethod.GET)
     public String getFollowees(@PathVariable("userId") int userId, Page page, Model model) {
         User user1 = userService.findUserById(userId);
@@ -78,6 +78,7 @@ public class FollowController implements CommunityConstant {
         return "/site/followee";
     }
 
+    // 粉丝（关注着）列表
     @RequestMapping(path = "/followers/{userId}", method = RequestMethod.GET)
     public String getFollowers(@PathVariable("userId") int userId, Page page, Model model) {
         User user1 = userService.findUserById(userId);

@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author: qian
  * @createDate: 2021/10/30
  */
-public class communityUtil {
+public class CommunityUtil {
 
     // 生成随机字符串
     public static String getUUId() {
