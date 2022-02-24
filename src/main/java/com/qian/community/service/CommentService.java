@@ -19,4 +19,7 @@ public interface CommentService {
 
 
     void addComment(Comment comment);
+
+    // 根据id查询评论
+    Comment findCommentById(int id);
 }

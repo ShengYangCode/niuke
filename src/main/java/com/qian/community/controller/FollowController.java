@@ -1,7 +1,9 @@
 package com.qian.community.controller;
 
+import com.qian.community.entity.Event;
 import com.qian.community.entity.Page;
 import com.qian.community.entity.User;
+import com.qian.community.event.EventProducer;
 import com.qian.community.service.UserService;
 import com.qian.community.service.impl.FollowService;
 import com.qian.community.util.CommunityConstant;
@@ -34,6 +36,9 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer producer;
+
 
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
@@ -41,6 +46,15 @@ public class FollowController implements CommunityConstant {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType, entityId);
+
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityId(entityId)
+                .setEntityType(entityType)
+                .setEntityUserId(entityId);
+        producer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "关注成功");
     }

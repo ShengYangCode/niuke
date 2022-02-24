@@ -15,6 +15,10 @@
         select count(*) from comment where entity_id = #{entityId} and entity_type = #{entityType} and status = 0
     </select>
 
+    <select id="selectCommentById" resultType="com.qian.community.entity.Comment">
+        select * from comment where id = #{id}
+    </select>
+
 
     <insert id="insertComment" parameterType="comment">
         insert into comment values (null, #{userId}, #{entityType}, #{entityId}, #{targetId},#{content},#{status}
