@@ -21,7 +21,7 @@ public class Event implements Serializable {
     private int userId; // 用户id
     private int entityType; // 实体类型
     private int entityId; // 实体id
-    private int entityUserId; // 实体作者
+    private int entityUserId; // 实体作者Id
     private Map<String, Object> data = new HashMap<>();
 
     public Event setData(String key, Object value) {
