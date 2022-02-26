@@ -8,6 +8,7 @@ import com.qian.community.service.CommentService;
 import com.qian.community.service.DiscussPostService;
 import com.qian.community.service.UserService;
 import com.qian.community.util.CommunityConstant;
+import com.qian.community.util.CommunityUtil;
 import com.qian.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,15 @@ public class CommentController implements CommunityConstant {
 
         // 判断是评论的是评论还是帖子 用户id不相同
         if (comment.getEntityType() == ENTITY_TYPE_POST) {
+
+            // 触发事件
+            Event event1 = new Event()
+                    .setTopic(TOPIC_PUBLISH)
+                    .setUserId(hostHolder.getUser().getId())
+                    .setEntityType(ENTITY_TYPE_POST)
+                    .setEntityId(discussPostId);
+            producer.fireEvent(event1);
+
             DiscussPost post = discussPostService.findDiscussPostById(comment.getEntityId());
             event.setEntityUserId(post.getUserId());
         } else if (comment.getEntityType() == ENTITY_TYPE_COMMENT) {

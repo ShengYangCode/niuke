@@ -1,17 +1,20 @@
 package com.qian.community.event;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qian.community.entity.DiscussPost;
 import com.qian.community.entity.Event;
 import com.qian.community.entity.Message;
+import com.qian.community.service.DiscussPostService;
+import com.qian.community.service.EsService;
 import com.qian.community.service.MessageService;
 import com.qian.community.util.CommunityConstant;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
+
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
+
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.MapUtils;
 
@@ -34,6 +37,12 @@ public class EventConsumer implements CommunityConstant {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private EsService esService;
 
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
     public void handleCommentMessage(ConsumerRecord record) {
@@ -72,5 +81,22 @@ public class EventConsumer implements CommunityConstant {
         messageService.addMessage(message);
     }
 
+    @KafkaListener(topics = {TOPIC_PUBLISH})
+    public void handlePublishMessage(ConsumerRecord record) {
 
+        if (record == null || record.value() == null) {
+            logger.error("消息的内容为空!");
+            return;
+        }
+
+        // 解析json
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            logger.error("消息格式错误!");
+            return;
+        }
+
+        DiscussPost post = discussPostService.findDiscussPostById(event.getEntityId());
+        esService.addDiscussPost(post);
+    }
 }
