@@ -14,14 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -224,6 +222,28 @@ public class UserServiceImpl implements UserService, CommunityConstant {
     @Override
     public User findUserByName(String name) {
         return userMapper.selectByName(name);
+    }
+
+
+    // 获取用户权限
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthoritys(int userId) {
+        User user = userMapper.selectById(userId);
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                switch (user.getType()) {
+                    case 1 :
+                        return AUTHORITY_ADMIN;
+                    case 2 :
+                        return AUTHORITY_MODER;
+                    default:
+                        return AUTHORITY_USER;
+                }
+            }
+        });
+        return list;
     }
 
     // 1. 从缓存中取user信息

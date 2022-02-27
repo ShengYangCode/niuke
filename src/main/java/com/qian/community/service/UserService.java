@@ -2,7 +2,9 @@ package com.qian.community.service;
 
 import com.qian.community.entity.LoginTicket;
 import com.qian.community.entity.User;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.Map;
 
 public interface UserService {
@@ -25,4 +27,6 @@ public interface UserService {
     void updatePassword(int id, String password, String newPassword);
 
     User findUserByName(String name);
+
+    Collection<? extends GrantedAuthority> getAuthoritys(int userId);
 }
