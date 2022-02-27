@@ -32,6 +32,16 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     }
 
     @Override
+    public int updateType(int id, int type) {
+        return discussPostMapper.updateType(id, type);
+    }
+
+    @Override
+    public int updateStates(int id, int states) {
+        return discussPostMapper.updateStates(id, states);
+    }
+
+    @Override
     public int addDiscussPost(DiscussPost discussPost) {
         if (discussPost == null) {
             throw new IllegalArgumentException("参数不能为空");

@@ -26,4 +26,10 @@ public interface DiscussPostMapper {
 
     //更新帖子评论的数量
     int updateCommentCount(int id, int count);
+
+    // 修改帖子的类型（加精等）
+    int updateType(int id, int type);
+
+    // 修改帖子的状态
+    int updateStates(int id, int status);
 }

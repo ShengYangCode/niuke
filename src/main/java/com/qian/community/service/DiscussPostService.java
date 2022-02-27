@@ -16,4 +16,11 @@ public interface DiscussPostService {
     DiscussPost findDiscussPostById(Integer id);
 
     List<DiscussPost> findDiscussPosts(int userId, int offset, int limit);
+
+
+    // 修改帖子的类型（加精等）
+    int updateType(int id, int type);
+
+    // 修改帖子的状态
+    int updateStates(int id, int states);
 }

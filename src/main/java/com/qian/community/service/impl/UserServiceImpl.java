@@ -237,7 +237,7 @@ public class UserServiceImpl implements UserService, CommunityConstant {
                     case 1 :
                         return AUTHORITY_ADMIN;
                     case 2 :
-                        return AUTHORITY_MODER;
+                        return AUTHORITY_MODERATOR;
                     default:
                         return AUTHORITY_USER;
                 }

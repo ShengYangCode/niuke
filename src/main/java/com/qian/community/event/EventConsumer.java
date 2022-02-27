@@ -99,4 +99,23 @@ public class EventConsumer implements CommunityConstant {
         DiscussPost post = discussPostService.findDiscussPostById(event.getEntityId());
         esService.addDiscussPost(post);
     }
+
+    // 消费删除帖子事件
+    @KafkaListener(topics = {TOPIC_DELETE})
+    public void handleDeleteMessage(ConsumerRecord record) {
+
+        if (record == null || record.value() == null) {
+            logger.error("消息的内容为空!");
+            return;
+        }
+
+        // 解析json
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            logger.error("消息格式错误!");
+            return;
+        }
+
+        esService.deleteDiscussPost(event.getEntityId());
+    }
 }

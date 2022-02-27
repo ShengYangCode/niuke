@@ -48,10 +48,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter implement
                         "/unfollow"
                 ).hasAnyAuthority(
                     AUTHORITY_ADMIN,
-                    AUTHORITY_MODER,
+                        AUTHORITY_MODERATOR,
                     AUTHORITY_USER
                 )
-                .anyRequest().permitAll()
+                // 版主才能访问加精和置顶
+                .antMatchers(
+                        "/discuss/top",
+                        "/discuss/wonderful"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_MODERATOR
+                )
+                // 管理员才可以删除
+                .antMatchers(
+                        "/discuss/delete"
+                )
+                .hasAnyAuthority(
+                        AUTHORITY_ADMIN
+                )
                 .anyRequest().permitAll()
                 .and().csrf().disable();
 
