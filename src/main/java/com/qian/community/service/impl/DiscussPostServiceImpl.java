@@ -27,8 +27,8 @@ public class DiscussPostServiceImpl implements DiscussPostService {
 
 
     @Override
-    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit) {
-        return discussPostMapper.selectDiscussPosts(userId, offset, limit);
+    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit, int orderMode) {
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit, orderMode);
     }
 
     @Override
@@ -39,6 +39,11 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     @Override
     public int updateStates(int id, int states) {
         return discussPostMapper.updateStates(id, states);
+    }
+
+    @Override
+    public int updateScore(int id, double Score) {
+        return discussPostMapper.updateScore(id, Score);
     }
 
     @Override

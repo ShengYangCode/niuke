@@ -15,7 +15,7 @@ public interface DiscussPostService {
 
     DiscussPost findDiscussPostById(Integer id);
 
-    List<DiscussPost> findDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> findDiscussPosts(int userId, int offset, int limit, int orderMode);
 
 
     // 修改帖子的类型（加精等）
@@ -23,4 +23,6 @@ public interface DiscussPostService {
 
     // 修改帖子的状态
     int updateStates(int id, int states);
+
+    int updateScore(int id, double Score);
 }

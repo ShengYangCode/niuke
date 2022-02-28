@@ -14,7 +14,7 @@ public interface DiscussPostMapper {
      * @param userId
      * @return 全部的帖子
      */
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
     // @Param 用于给参数起别名
     // 如果只有一个参数并且在动态sql里使用就必须要用@Param起别名
@@ -32,4 +32,7 @@ public interface DiscussPostMapper {
 
     // 修改帖子的状态
     int updateStates(int id, int status);
+
+    // 修改帖子的状态
+    int updateScore(int id, double score);
 }
